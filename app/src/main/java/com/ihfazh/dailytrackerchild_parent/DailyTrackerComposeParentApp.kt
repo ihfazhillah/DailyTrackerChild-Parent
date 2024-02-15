@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.ihfazh.dailytrackerchild_parent.pages.child_picker.ChildPickerScreen
+import com.ihfazh.dailytrackerchild_parent.pages.home.HomeScreen
 import com.ihfazh.dailytrackerchild_parent.pages.login.LoginScreen
 import com.ihfazh.dailytrackerchild_parent.pages.login.LoginViewModel
 import com.ihfazh.dailytrackerchild_parent.pages.task_list.TaskListScreen
@@ -43,9 +43,9 @@ fun DailyTrackerNavHost(
         }
         
         composable("child-picker"){
-                ChildPickerScreen(
+                HomeScreen(
                     onProfileClicked = {profile ->
-                        navController.navigate("task-list/${profile.id}")
+//                        navController.navigate("task-list/${profile.id}")
                     }
                 )
         }

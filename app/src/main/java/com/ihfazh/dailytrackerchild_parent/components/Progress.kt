@@ -16,28 +16,16 @@ import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
 
 @Composable
-fun MyProgress(progress: Float) {
+fun MyProgress(progress: Float, modifier: Modifier = Modifier) {
     var totalProgress = (progress * 100)
     if (totalProgress.isNaN()) {
         totalProgress = 0f
     }
 
-    Column {
-        Text(text = "Kemajuan Kamu", style = MaterialTheme.typography.labelLarge)
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            LinearProgressIndicator(
-                progress = progress,
-                modifier = Modifier
-                    .height(16.dp)
-            )
-
-            Spacer(Modifier.width(16.dp))
-
-            Text(text = "${totalProgress.roundToInt()}%", style = MaterialTheme.typography.labelLarge)
-        }
-    }
+    LinearProgressIndicator(
+        progress = progress,
+        modifier = modifier
+    )
 }
 
 

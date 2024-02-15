@@ -1,4 +1,4 @@
-package com.ihfazh.dailytrackerchild_parent.pages.child_picker
+package com.ihfazh.dailytrackerchild_parent.pages.home
 
 import com.ihfazh.dailytrackerchild_parent.components.ProfileItem
 

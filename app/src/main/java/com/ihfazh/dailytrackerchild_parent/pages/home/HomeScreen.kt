@@ -1,4 +1,4 @@
-package com.ihfazh.dailytrackerchild_parent.pages.child_picker
+package com.ihfazh.dailytrackerchild_parent.pages.home
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -9,15 +9,15 @@ import com.ihfazh.dailytrackerchild_parent.components.OnProfileClicked
 
 
 @Composable
-fun ChildPickerScreen(
+fun HomeScreen(
     modifier: Modifier = Modifier,
     onProfileClicked: OnProfileClicked,
-    vm: ChildPickerViewModel = viewModel(factory = ChildPickerViewModel.Factory),
+    vm: HomeViewModel = viewModel(factory = HomeViewModel.Factory),
 ){
 
     val state = vm.state.collectAsState()
 
-    ChildPicker(
+    Home(
         state=state.value,
         modifier=modifier,
         onRetryClicked = {vm.getChildren()},

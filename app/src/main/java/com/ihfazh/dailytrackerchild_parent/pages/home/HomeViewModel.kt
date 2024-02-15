@@ -1,4 +1,4 @@
-package com.ihfazh.dailytrackerchild_parent.pages.child_picker
+package com.ihfazh.dailytrackerchild_parent.pages.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class ChildPickerViewModel(
+class HomeViewModel(
     private val client: Client,
     private val childrenCache: ChildrenCache
 ): ViewModel(){
@@ -45,7 +45,7 @@ class ChildPickerViewModel(
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
                 val application = checkNotNull(extras[APPLICATION_KEY]) as DailyTrackerChildApplication
-                return ChildPickerViewModel(
+                return HomeViewModel(
                     application.compositionRoot.client,
                     application.compositionRoot.childrenCache
                 ) as T
