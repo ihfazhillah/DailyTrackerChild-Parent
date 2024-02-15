@@ -8,6 +8,12 @@ espresso-core = "3.5.1"
 lifecycle-runtime-ktx = "2.7.0"
 activity-compose = "1.8.2"
 compose-bom = "2023.08.00"
+coil = "2.5.0"
+viewmodel-compose = "2.6.1"
+parcelize = "1.9.0"
+nav = "2.7.6"
+moshi = "1.15.0"
+ktor = "2.3.8"
 
 [libraries]
 core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "core-ktx" }
@@ -24,8 +30,20 @@ ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview
 ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 material3 = { group = "androidx.compose.material3", name = "material3" }
+coil-compose = { name = "coil-compose", group = "io.coil-kt", version.ref = "coil"}
+coil = { name = "coil", group = "io.coil-kt", version.ref = "coil"}
+viewmodel-compose = {group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "viewmodel-compose"}
+nav-compose = {group = "androidx.navigation", name = "navigation-compose", version.ref = "nav"}
+moshi-kotlin = {group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshi"}
+ktor-client-okhttp = {group = "io.ktor", name="ktor-client-okhttp", version.ref = "ktor"}
+ktor-client-serialization = {group = "io.ktor", name="ktor-client-serialization", version.ref = "ktor"}
+ktor-client-content-negotiation = {group = "io.ktor", name="ktor-client-content-negotiation", version.ref = "ktor"}
+kotlinx-serialization = {group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version="1.6.2"}
+ktor-serialization-kotlinx-json = {group = "io.ktor", name="ktor-serialization-kotlinx-json", version.ref = "ktor"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 kotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+parcelize = {id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "parcelize"}
+pluginSerialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
 
