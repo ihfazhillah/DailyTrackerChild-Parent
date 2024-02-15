@@ -18,13 +18,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            DailyTrackerChildParentTheme {
+            DailyTrackerChildParentTheme(dynamicColor = false, darkTheme = false) {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(24.dp),
-                    color = MaterialTheme.colorScheme.background
+//                    color = MaterialTheme.colorScheme.background
                 ) {
                     DailyTrackerComposeParentApp()
                 }
