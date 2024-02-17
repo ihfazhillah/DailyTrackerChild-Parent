@@ -28,7 +28,7 @@ fun DailyTrackerNavHost(
 
     val activity = (LocalContext.current as MainActivity)
 
-    NavHost(navController = navController, startDestination = "child-picker"){
+    NavHost(navController = navController, startDestination = "login"){
         composable("login"){
             LoginScreen(
                 viewModel = viewModel(factory = LoginViewModel.Factory) ,
@@ -45,7 +45,7 @@ fun DailyTrackerNavHost(
         composable("child-picker"){
                 HomeScreen(
                     onProfileClicked = {profile ->
-//                        navController.navigate("task-list/${profile.id}")
+                        navController.navigate("task-list/${profile.id}")
                     }
                 )
         }
@@ -57,9 +57,7 @@ fun DailyTrackerNavHost(
 
             TaskListScreen(
                 viewModel = viewModel(factory = TaskListViewModel.Factory(profile)),
-                onProfileClicked = {
-                    navController.navigateUp()
-                }
+                onBack = {navController.navigateUp()}
             )
         }
 

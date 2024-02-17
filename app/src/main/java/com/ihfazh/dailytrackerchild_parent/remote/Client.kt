@@ -10,4 +10,5 @@ interface Client {
     suspend fun getTaskList(id: String): Outcome<TaskListResponse, OutcomeError>
 
     suspend fun markTaskAsFinished(id: String): Outcome<Task, OutcomeError>
+    suspend fun confirmTask(id: String): Outcome<Task, OutcomeError>
 }

@@ -19,12 +19,10 @@ import kotlinx.coroutines.launch
 class TaskListViewModel(
     private val client: Client,
     private val profileItem: ProfileItem,
-    dateProvider: DateProvider
 ): ViewModel(){
 
-    private val date = dateProvider.getDateItem()
 
-    private val _state = MutableStateFlow<BaseState>(Loading(profileItem, date))
+    private val _state = MutableStateFlow<BaseState>(Loading(profileItem))
     val state = _state.asStateFlow()
 
 
@@ -32,8 +30,8 @@ class TaskListViewModel(
         viewModelScope.launch(Dispatchers.IO){
             val response = client.getTaskList(profileItem.id)
             _state.value = when(response){
-                is Failure -> Error(profileItem, date, response.error.msg)
-                is Success -> Idle(profileItem, date, response.value.tasks)
+                is Failure -> Error(profileItem,  response.error.msg)
+                is Success -> Idle(profileItem,  response.value.tasks)
             }
         }
 
@@ -48,7 +46,7 @@ class TaskListViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             _state.value = (state.value as Idle).updateTaskStatusById(id, TaskStatus.processing)
 
-            val response = client.markTaskAsFinished(id)
+            val response = client.confirmTask(id)
 
             _state.value = when(response){
                 is Failure -> (state.value as Idle).updateTaskStatusById(id, TaskStatus.error)
@@ -69,7 +67,6 @@ class TaskListViewModel(
                 return TaskListViewModel(
                     application.compositionRoot.client,
                     profileItem,
-                    application.compositionRoot.dateProvider
                 ) as T
             }
         }

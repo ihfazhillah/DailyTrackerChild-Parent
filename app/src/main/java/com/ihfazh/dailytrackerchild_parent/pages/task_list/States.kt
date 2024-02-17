@@ -7,9 +7,9 @@ import com.ihfazh.dailytrackerchild_parent.components.TaskStatus
 
 sealed interface TaskListStates
 
-open class BaseState(open val profile: ProfileItem, open val dateItem: DateItem): TaskListStates
-data class Loading(override val profile: ProfileItem, override val dateItem: DateItem): BaseState(profile, dateItem)
-data class Idle(override val profile: ProfileItem, override val dateItem: DateItem, val tasks: List<Task>): BaseState(profile, dateItem){
+open class BaseState(open val profile: ProfileItem): TaskListStates
+data class Loading(override val profile: ProfileItem): BaseState(profile)
+data class Idle(override val profile: ProfileItem, val tasks: List<Task>): BaseState(profile){
     fun updateTaskStatusById(id: String, status: TaskStatus) = copy(tasks = tasks.map{ task ->
         if (task.id == id) {
             task.copy(status = status)
@@ -18,4 +18,4 @@ data class Idle(override val profile: ProfileItem, override val dateItem: DateIt
         }
     })
 }
-data class Error(override val profile: ProfileItem, override val dateItem: DateItem, val error: String): BaseState(profile, dateItem)
+data class Error(override val profile: ProfileItem, val error: String): BaseState(profile)

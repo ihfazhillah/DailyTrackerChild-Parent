@@ -1,9 +1,7 @@
 package com.ihfazh.dailytrackerchild_parent.pages.task_list
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -11,119 +9,115 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ihfazh.dailytrackerchild_parent.components.Avatar
+import coil.compose.AsyncImage
 import com.ihfazh.dailytrackerchild_parent.components.Child
-import com.ihfazh.dailytrackerchild_parent.components.Date
 import com.ihfazh.dailytrackerchild_parent.components.DateItem
 import com.ihfazh.dailytrackerchild_parent.components.ErrorMessage
 import com.ihfazh.dailytrackerchild_parent.components.HijriDateItem
-import com.ihfazh.dailytrackerchild_parent.components.MyProgress
 import com.ihfazh.dailytrackerchild_parent.components.ProfileItem
 import com.ihfazh.dailytrackerchild_parent.components.Task
 import com.ihfazh.dailytrackerchild_parent.components.TaskCard
 import com.ihfazh.dailytrackerchild_parent.components.TaskStatus
-import com.ihfazh.dailytrackerchild_parent.components.onTaskFinish
+import com.ihfazh.dailytrackerchild_parent.components.onTaskConfirm
 import com.ihfazh.dailytrackerchild_parent.types.OnRetryClicked
 
 
 private fun ProfileItem.toChild(): Child = Child(avatarUrl, name)
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TaskList(
     state: BaseState,
     modifier: Modifier = Modifier,
-    onTaskFinish: onTaskFinish = {},
+    onTaskConfirm: onTaskConfirm = {},
     onRetryClicked: OnRetryClicked = {},
-    onProfileClicked: () -> Unit
-
+    onBackClicked: () -> Unit = {}
 ){
 
     val user = state.profile.toChild()
 
-    val date = state.dateItem
-
-    val progress = if (state is Idle) {
-        state.tasks.filter { it.status === TaskStatus.finished}.size.toFloat() / state.tasks.size
-    } else {
-        state.profile.progress
-    }
-
-
-    Surface {
-        Column (
-            modifier = modifier
-        ){
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .clickable { onProfileClicked.invoke() }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.primary
+                ),
+                title = {
+                    Row{
+                        AsyncImage(
+                            model = user.avatarUrl,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .height(30.dp)
+                                .width(30.dp)
+                                .clip(CircleShape)
+                        )
+                        Spacer(Modifier.width(8.dp))
+                        Text(text = user.name)
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClicked) {
+                        Icon(Icons.Filled.ArrowBack, "backIcon")
+                    }
+                },
+            )
+        }
+    ) { paddingValues ->
+            Column(
+                modifier = modifier
+                    .padding(paddingValues)
             ) {
-                Avatar(child = user)
-                Spacer(modifier = Modifier.width(16.dp))
-                Text(
-                    text = user.name,
-                    style = MaterialTheme.typography.headlineMedium
-                )
-            }
 
-            Row {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center,
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .padding(24.dp)
-                ){
-
-                    Date(
-                        item = date,
-                    )
-
-                    Spacer(modifier = Modifier.height(40.dp))
-
-                    MyProgress(indicatorProgress = progress)
-                }
-
-                if (state is Idle){
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        contentPadding = PaddingValues(8.dp)
-                    ){
-                        items(state.tasks){task ->
+                if (state is Idle) {
+                    LazyColumn(
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        items(state.tasks) { task ->
                             TaskCard(
                                 task = task,
                                 modifier = Modifier
-                                    .padding(12.dp),
-                                onTaskFinishClick = onTaskFinish
+                                    .padding(0.dp, 8.dp)
+                                ,
+                                onTaskConfirmClick = onTaskConfirm
                             )
                         }
                     }
                 }
 
-                if (state is Error){
-                    Column (
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth()
-                    ){
+
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth()
+                ) {
+
+                    if (state is Error) {
                         ErrorMessage(errorMessage = state.error)
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -137,31 +131,28 @@ fun TaskList(
                         }
 
                     }
-                }
 
-                if (state is Loading){
-                    Column (
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier
-                            .fillMaxHeight()
-                            .fillMaxWidth()
-                    ){
+                    if (state is Loading) {
 
-                        CircularProgressIndicator(Modifier.height(100.dp).width(100.dp))
+                        CircularProgressIndicator(
+                            Modifier
+                                .height(100.dp)
+                                .width(100.dp)
+                        )
 
                     }
 
-                }
 
+                }
             }
+
         }
 
-    }
+
 }
 
 
-@Preview(widthDp = 1280)
+@Preview(device = "id:pixel")
 @Composable
 fun TaskListPreview(){
     val tasks = listOf<Task>(
@@ -181,10 +172,10 @@ fun TaskListPreview(){
     )
 
     TaskList(
-        Loading(
-            ProfileItem("1", "url", "hello", 0.2F),
-            date
+        Idle(
+            ProfileItem("1", "Ihfazhillah", "https://www.gstatic.com/devrel-devsite/prod/v5ba20c1e081870fd30b7c8ebfa8711369a575956c1f44323664285c05468c6a4/android/images/lockup.svg", 0.2F),
+            tasks=tasks
         ),
-        onProfileClicked = {}
+//        onProfileClicked = {}
     )
 }

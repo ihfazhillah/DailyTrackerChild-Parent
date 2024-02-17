@@ -93,6 +93,19 @@ class ActualClient(
             Outcome.failure(OutcomeError(e.stackTraceToString()))
         }
     }
+
+    override suspend fun confirmTask(id: String): Outcome<Task, OutcomeError> {
+        val url = "$baseUrl$childrenTaskBase/confirm/"
+        val response = httpClient.post(url){
+            contentType(ContentType.Application.Json)
+            setBody(MarkAsFinishedBody(id))
+        }
+        return try {
+            Outcome.success(response.body<MarkAsFinishedResponse>().task.toTask())
+        } catch (e: Exception){
+            Outcome.failure(OutcomeError(e.stackTraceToString()))
+        }
+    }
 }
 
 private fun TaskListFromRemoteResponse.toTaskListResponse(): TaskListResponse = TaskListResponse(

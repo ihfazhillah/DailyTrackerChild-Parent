@@ -57,4 +57,12 @@ class DummyClient : Client {
         return Outcome.success(task.copy(status = statuses.random()))
     }
 
+    override suspend fun confirmTask(id: String): Outcome<Task, OutcomeError> {
+        delay(1000)
+
+        val task = tasks.find { t -> t.id == id } ?: return Outcome.failure(OutcomeError("Task not found"))
+
+        return Outcome.success(task.copy(status = TaskStatus.finished))
+    }
+
 }
