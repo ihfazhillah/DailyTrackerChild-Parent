@@ -23,7 +23,6 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(24.dp),
 //                    color = MaterialTheme.colorScheme.background
                 ) {
                     DailyTrackerComposeParentApp()

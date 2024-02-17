@@ -71,7 +71,7 @@ fun ProfileCard(
             ) {
                 Avatar(child, 30.dp)
                 Spacer(modifier = Modifier.width(8.dp))
-                MyProgress(progress = profile.progress, modifier = Modifier.height(20.dp))
+                MyProgress(indicatorProgress = profile.progress, modifier = Modifier.height(20.dp))
             }
 
         }

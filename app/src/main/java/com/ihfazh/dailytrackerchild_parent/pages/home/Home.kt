@@ -36,8 +36,8 @@ fun Home(state: ChildState, modifier: Modifier = Modifier, onChildClicked: OnPro
 
 
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+//        horizontalAlignment = Alignment.CenterHorizontally,
+//        verticalArrangement = Arrangement.Center,
 
         modifier = modifier
             .fillMaxWidth()
@@ -45,23 +45,21 @@ fun Home(state: ChildState, modifier: Modifier = Modifier, onChildClicked: OnPro
 
     ) {
 
-        Text(
-            text = "Perkembangan Anak",
-            style = MaterialTheme.typography.titleLarge
-        )
 
-        Spacer(modifier = Modifier.height(24.dp))
 
 
         if (state is Idle){
             LazyColumn(
-                modifier = Modifier.height(250.dp)
+                modifier = Modifier.padding(16.dp)
             ) {
                 items(state.profiles){profile ->
                     ProfileCard(
                         profile = profile,
                         modifier = Modifier
-                            .padding(8.dp),
+                            .padding(8.dp)
+                            .fillMaxWidth()
+                        ,
+
                         onProfileClicked = onChildClicked
                     )
                 }
@@ -69,23 +67,39 @@ fun Home(state: ChildState, modifier: Modifier = Modifier, onChildClicked: OnPro
         }
 
         if (state is Loading){
-            CircularProgressIndicator(
-                Modifier
-                    .height(100.dp)
-                    .width(100.dp))
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight()
+            ) {
+                CircularProgressIndicator(
+                    Modifier
+                        .height(100.dp)
+                        .width(100.dp))
+            }
         }
 
         if (state is Error){
-            Row {
-                ErrorMessage(errorMessage = state.error)
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+            ) {
+                Row {
+                    ErrorMessage(errorMessage = state.error)
 
-                Spacer(modifier = Modifier.width(16.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
 
-                Button(onClick = onRetryClicked) {
-                    Icon( Icons.Rounded.Refresh, contentDescription = null)
-                    Text(text = "Retry")
+                    Button(onClick = onRetryClicked) {
+                        Icon( Icons.Rounded.Refresh, contentDescription = null)
+                        Text(text = "Retry")
+                    }
+
                 }
-
             }
         }
 

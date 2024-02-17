@@ -46,7 +46,7 @@ class ActivityCompositionRoot(context: Application) {
         }
     }
 
-    val client = ActualClient(ktor, tokenCacheUtil)
-//    val client: DummyClient = DummyClient()
+//    val client = ActualClient(ktor, tokenCacheUtil)
+    val client: DummyClient = DummyClient()
 
 }

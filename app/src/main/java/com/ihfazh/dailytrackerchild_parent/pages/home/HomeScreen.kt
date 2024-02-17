@@ -1,5 +1,14 @@
 package com.ihfazh.dailytrackerchild_parent.pages.home
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -13,6 +22,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ihfazh.dailytrackerchild_parent.components.OnProfileClicked
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
@@ -22,12 +32,28 @@ fun HomeScreen(
 
     val state = vm.state.collectAsState()
 
-    Home(
-        state=state.value,
-        modifier=modifier,
-        onRetryClicked = {vm.getChildren()},
-        onChildClicked = onProfileClicked
-    )
+    Scaffold(
+        topBar = {
+            TopAppBar(colors = topAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                titleContentColor = MaterialTheme.colorScheme.primary
+            ),
+                title = {
+                    Text(text = "Perkembangan Anak")
+                }
+            )
+        }
+    ) { it ->
+        Home(
+            state=state.value,
+            modifier=modifier
+                .padding(it)
+            ,
+            onRetryClicked = {vm.getChildren()},
+            onChildClicked = onProfileClicked
+        )
+    }
+
 
     val lifecycleOwner = LocalLifecycleOwner.current
 

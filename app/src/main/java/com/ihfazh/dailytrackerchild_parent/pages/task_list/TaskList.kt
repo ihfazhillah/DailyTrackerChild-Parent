@@ -97,7 +97,7 @@ fun TaskList(
 
                     Spacer(modifier = Modifier.height(40.dp))
 
-                    MyProgress(progress = progress)
+                    MyProgress(indicatorProgress = progress)
                 }
 
                 if (state is Idle){

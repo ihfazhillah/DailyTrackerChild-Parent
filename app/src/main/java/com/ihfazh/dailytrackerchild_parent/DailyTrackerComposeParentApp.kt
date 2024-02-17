@@ -28,7 +28,7 @@ fun DailyTrackerNavHost(
 
     val activity = (LocalContext.current as MainActivity)
 
-    NavHost(navController = navController, startDestination = "login"){
+    NavHost(navController = navController, startDestination = "child-picker"){
         composable("login"){
             LoginScreen(
                 viewModel = viewModel(factory = LoginViewModel.Factory) ,
