@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import com.ihfazh.dailytrackerchild_parent.pages.login.LoginSuccess
-import com.ihfazh.dailytrackerchild_parent.pages.login.LoginViewModel
 
 
 typealias OnLoginSuccess = () -> Unit

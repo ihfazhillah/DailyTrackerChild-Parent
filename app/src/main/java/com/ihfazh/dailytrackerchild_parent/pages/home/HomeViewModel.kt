@@ -19,11 +19,11 @@ class HomeViewModel(
     private val client: Client,
     private val childrenCache: ChildrenCache
 ): ViewModel(){
-    private var _state = MutableStateFlow<ChildState>(Loading)
+    private var _state = MutableStateFlow<ChildState>(Loading(listOf()))
     val state = _state.asStateFlow()
 
     fun getChildren(){
-        _state.value = Loading
+        _state.value = Loading(state.value.profiles)
 
         viewModelScope.launch(Dispatchers.IO){
             val outcome = client.getChildren()

@@ -47,8 +47,7 @@ fun Home(state: ChildState, modifier: Modifier = Modifier, onChildClicked: OnPro
 
 
 
-
-        if (state is Idle){
+        if (state is Idle || state is Loading && state.profiles.isNotEmpty()){
             LazyColumn(
                 modifier = Modifier.padding(16.dp)
             ) {
@@ -66,7 +65,7 @@ fun Home(state: ChildState, modifier: Modifier = Modifier, onChildClicked: OnPro
             }
         }
 
-        if (state is Loading){
+        if (state is Loading && state.profiles.isEmpty()){
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,

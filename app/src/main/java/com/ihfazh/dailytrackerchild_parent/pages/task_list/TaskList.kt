@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -66,13 +67,16 @@ fun TaskList(
                     titleContentColor = MaterialTheme.colorScheme.primary
                 ),
                 title = {
-                    Row{
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxSize()
+                    ){
                         AsyncImage(
                             model = user.avatarUrl,
                             contentDescription = null,
                             modifier = Modifier
-                                .height(30.dp)
-                                .width(30.dp)
+                                .height(45.dp)
+                                .width(45.dp)
                                 .clip(CircleShape)
                         )
                         Spacer(Modifier.width(8.dp))
