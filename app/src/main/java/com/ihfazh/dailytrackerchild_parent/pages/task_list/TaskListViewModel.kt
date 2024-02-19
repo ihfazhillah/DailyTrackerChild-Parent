@@ -10,7 +10,6 @@ import com.ihfazh.dailytrackerchild_parent.components.TaskStatus
 import com.ihfazh.dailytrackerchild_parent.fp.Failure
 import com.ihfazh.dailytrackerchild_parent.fp.Success
 import com.ihfazh.dailytrackerchild_parent.remote.Client
-import com.ihfazh.dailytrackerchild_parent.utils.DateProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -47,6 +46,24 @@ class TaskListViewModel(
             _state.value = (state.value as Idle).updateTaskStatusById(id, TaskStatus.processing)
 
             val response = client.confirmTask(id)
+
+            _state.value = when(response){
+                is Failure -> (state.value as Idle).updateTaskStatusById(id, TaskStatus.error)
+                is Success -> (state.value as Idle).updateTaskStatusById(response.value.id, response.value.status)
+            }
+        }
+    }
+
+    fun markAsTodo(id: String) {
+        if (state.value !is Idle){
+            return
+        }
+
+
+        viewModelScope.launch(Dispatchers.IO) {
+            _state.value = (state.value as Idle).updateTaskStatusById(id, TaskStatus.processing)
+
+            val response = client.resetTask(id)
 
             _state.value = when(response){
                 is Failure -> (state.value as Idle).updateTaskStatusById(id, TaskStatus.error)

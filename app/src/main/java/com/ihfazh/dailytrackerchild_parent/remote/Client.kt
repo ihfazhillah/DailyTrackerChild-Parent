@@ -11,4 +11,5 @@ interface Client {
 
     suspend fun markTaskAsFinished(id: String): Outcome<Task, OutcomeError>
     suspend fun confirmTask(id: String): Outcome<Task, OutcomeError>
+    suspend fun resetTask(id: String): Outcome<Task, OutcomeError>
 }

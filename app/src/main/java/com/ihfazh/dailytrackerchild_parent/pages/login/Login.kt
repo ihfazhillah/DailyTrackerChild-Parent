@@ -28,9 +28,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.ihfazh.dailytrackerchild_parent.pages.login.IdleLoginState
-import com.ihfazh.dailytrackerchild_parent.pages.login.LoginState
-import com.ihfazh.dailytrackerchild_parent.pages.login.Submitting
 import com.ihfazh.dailytrackerchild_parent.components.ErrorMessage
 
 

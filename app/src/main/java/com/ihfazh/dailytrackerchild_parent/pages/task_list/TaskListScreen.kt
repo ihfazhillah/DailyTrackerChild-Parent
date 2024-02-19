@@ -18,6 +18,7 @@ fun TaskListScreen(
         modifier = modifier,
         onRetryClicked = {viewModel.getTaskList()},
         onTaskConfirm = {viewModel.markTaskAsFinished(it)},
+        onTaskTodo = {viewModel.markAsTodo(it)},
         onBackClicked = onBack
     )
 }

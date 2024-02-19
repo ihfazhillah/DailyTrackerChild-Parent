@@ -31,3 +31,9 @@ data class MarkAsFinishedBody(val task_id: String)
 
 @Serializable
 data class MarkAsFinishedResponse(val task: TaskRemote)
+
+@Serializable
+data class ResetTaskBody(val task_id: String)
+
+@Serializable
+data class ResetTaskResponse(val task: TaskRemote)

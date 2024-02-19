@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -53,6 +52,7 @@ fun TaskList(
     state: BaseState,
     modifier: Modifier = Modifier,
     onTaskConfirm: onTaskConfirm = {},
+    onTaskTodo: onTaskConfirm = {},
     onRetryClicked: OnRetryClicked = {},
     onBackClicked: () -> Unit = {}
 ){
@@ -69,7 +69,7 @@ fun TaskList(
                 title = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxWidth()
                     ){
                         AsyncImage(
                             model = user.avatarUrl,
@@ -106,7 +106,8 @@ fun TaskList(
                                 modifier = Modifier
                                     .padding(0.dp, 8.dp)
                                 ,
-                                onTaskConfirmClick = onTaskConfirm
+                                onTaskConfirmClick = onTaskConfirm,
+                                onTaskToTodo = onTaskTodo
                             )
                         }
                     }

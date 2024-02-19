@@ -106,6 +106,19 @@ class ActualClient(
             Outcome.failure(OutcomeError(e.stackTraceToString()))
         }
     }
+
+    override suspend fun resetTask(id: String): Outcome<Task, OutcomeError> {
+        val url = "$baseUrl$childrenTaskBase/reset/"
+        val response = httpClient.post(url){
+            contentType(ContentType.Application.Json)
+            setBody(ResetTaskBody(id))
+        }
+        return try {
+            Outcome.success(response.body<ResetTaskResponse>().task.toTask())
+        } catch (e: Exception){
+            Outcome.failure(OutcomeError(e.stackTraceToString()))
+        }
+    }
 }
 
 private fun TaskListFromRemoteResponse.toTaskListResponse(): TaskListResponse = TaskListResponse(
