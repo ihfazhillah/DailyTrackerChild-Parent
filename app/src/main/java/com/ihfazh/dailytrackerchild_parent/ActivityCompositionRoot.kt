@@ -1,5 +1,6 @@
 package com.ihfazh.dailytrackerchild_parent
 
+import android.accounts.AccountManager
 import android.app.Application
 import android.content.Context
 import com.ihfazh.dailytrackerchild_parent.remote.ActualClient
@@ -15,9 +16,9 @@ import kotlinx.serialization.json.Json
 
 class ActivityCompositionRoot(context: Application) {
     val childrenCache: ChildrenCache = ChildrenCache(context.getSharedPreferences("childrenCache", Context.MODE_PRIVATE))
-    val tokenCacheUtil = TokenCache(context.getSharedPreferences("tokenCache", Context.MODE_PRIVATE))
+    val tokenCacheUtil = TokenCache()
+    val accountManager = AccountManager.get(context)
 
-//    val dateProvider = DateProvider()
 
 
     private val ktor = HttpClient(OkHttp){
@@ -44,6 +45,5 @@ class ActivityCompositionRoot(context: Application) {
     }
 
     val client = ActualClient(ktor, tokenCacheUtil)
-//    val client: DummyClient = DummyClient()
 
 }

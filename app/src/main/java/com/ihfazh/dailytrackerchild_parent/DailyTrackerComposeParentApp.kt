@@ -11,6 +11,8 @@ import androidx.navigation.compose.rememberNavController
 import com.ihfazh.dailytrackerchild_parent.pages.home.HomeScreen
 import com.ihfazh.dailytrackerchild_parent.pages.login.LoginScreen
 import com.ihfazh.dailytrackerchild_parent.pages.login.LoginViewModel
+import com.ihfazh.dailytrackerchild_parent.pages.shared_login.SharedLogin
+import com.ihfazh.dailytrackerchild_parent.pages.shared_login.SharedLoginViewModel
 import com.ihfazh.dailytrackerchild_parent.pages.task_list.TaskListScreen
 import com.ihfazh.dailytrackerchild_parent.pages.task_list.TaskListViewModel
 
@@ -30,8 +32,8 @@ fun DailyTrackerNavHost(
 
     NavHost(navController = navController, startDestination = "login"){
         composable("login"){
-            LoginScreen(
-                viewModel = viewModel(factory = LoginViewModel.Factory) ,
+            SharedLogin(
+                viewModel = viewModel(factory = SharedLoginViewModel.Factory) ,
                 onLoginSuccess = {
                     navController.navigate("child-picker" ){
                         popUpTo("login"){
