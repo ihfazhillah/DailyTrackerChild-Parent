@@ -3,7 +3,6 @@ package com.ihfazh.dailytrackerchild_parent.pages.shared_login
 import android.accounts.AccountManager
 import android.app.Activity
 import android.content.Intent
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Box
@@ -32,24 +31,6 @@ fun SharedLogin(
 
     val state = viewModel.state.collectAsState()
 
-    /*
-        1.  we need check if we already have a token from cache
-        2. if no token:
-            - ask android for token:
-            ---> we may get more than one TODO handle this
-                a. get token, save into our internal cache
-                b. open get token page using intent:
-                    - if result is ok:
-                        get token again
-         3. token already there: -> go to on success
-
-         states:
-         - initial
-         - success -> setelah dapat token
-         - need_user_interaction
-
-     */
-
 
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
 
@@ -61,17 +42,21 @@ fun SharedLogin(
 
     val startForResult =
         rememberLauncherForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            Log.d("Shared Login", "On Result")
-            Log.d("Shared Login", "$result")
-
 
             if (result.resultCode == Activity.RESULT_OK) {
+                // result from get auth token
                 val intent = result.data
                 val authToken = intent?.getStringExtra(AccountManager.KEY_AUTHTOKEN)
                 if (authToken != null){
                     viewModel.setToken(authToken)
                 }
-                Log.d("Shared Login", authToken ?: "not found")
+
+                // result from the select account
+                val accountName = intent?.getStringExtra(AccountManager.KEY_ACCOUNT_NAME)
+                val accountType = intent?.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE)
+                if (accountName != null && accountType !== null){
+                    viewModel.selectAccount(accountName, accountType)
+                }
             }
         }
 
@@ -81,6 +66,7 @@ fun SharedLogin(
         }
 
         if (state.value is NeedUserInteraction){
+            // get auth token / selected account
             startForResult.launch((state.value as NeedUserInteraction).intent)
         }
     }
