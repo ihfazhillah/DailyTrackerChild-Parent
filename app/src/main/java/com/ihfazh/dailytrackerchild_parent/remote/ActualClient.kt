@@ -119,6 +119,17 @@ class ActualClient(
             Outcome.failure(OutcomeError(e.stackTraceToString()))
         }
     }
+
+    override suspend fun todayParentDashboard(): Outcome<ParentDashboardResponse, OutcomeError> {
+        val url = "$baseUrl$childrenTaskBase/dashboard/today/"
+        val response = httpClient.get(url)
+
+        return try {
+           Outcome.success(response.body<ParentDashboardResponse>())
+        } catch (e: Exception){
+            Outcome.failure(OutcomeError(e.stackTraceToString()))
+        }
+    }
 }
 
 private fun TaskListFromRemoteResponse.toTaskListResponse(): TaskListResponse = TaskListResponse(

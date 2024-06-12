@@ -73,4 +73,8 @@ class DummyClient : Client {
         return Outcome.success(task.copy(status = TaskStatus.todo))
     }
 
+    override suspend fun todayParentDashboard(): Outcome<ParentDashboardResponse, OutcomeError> {
+        TODO("Not yet implemented")
+    }
+
 }

@@ -6,6 +6,7 @@ import android.content.Context
 import com.ihfazh.dailytrackerchild_parent.remote.ActualClient
 import com.ihfazh.dailytrackerchild_parent.remote.TokenHeader
 import com.ihfazh.dailytrackerchild_parent.utils.ChildrenCache
+import com.ihfazh.dailytrackerchild_parent.utils.DateProvider
 import com.ihfazh.dailytrackerchild_parent.utils.TokenCache
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -18,6 +19,7 @@ class ActivityCompositionRoot(context: Application) {
     val childrenCache: ChildrenCache = ChildrenCache(context.getSharedPreferences("childrenCache", Context.MODE_PRIVATE))
     val tokenCacheUtil = TokenCache()
     val accountManager = AccountManager.get(context)
+    val dateProvider = DateProvider()
 
 
 

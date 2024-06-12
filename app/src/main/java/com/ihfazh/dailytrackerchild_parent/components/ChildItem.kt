@@ -41,8 +41,9 @@ fun ChildItem(data: ChildData, modifier: Modifier = Modifier, onClick: (ChildDat
         horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
-            .fillMaxWidth()
             .shadow(1.dp, shape = RoundedCornerShape(8.dp))
+            .background(MaterialTheme.colorScheme.background)
+            .fillMaxWidth()
             .padding(24.dp)
     ) {
 
@@ -102,7 +103,7 @@ fun ChildItem(data: ChildData, modifier: Modifier = Modifier, onClick: (ChildDat
                         .height(30.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(data.todoCount.toString(), color = MaterialTheme.colorScheme.onPrimary)
+                    Text(data.finishedCount.toString(), color = MaterialTheme.colorScheme.onPrimary)
                 }
 
             }

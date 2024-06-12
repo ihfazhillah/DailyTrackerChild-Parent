@@ -8,9 +8,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.ihfazh.dailytrackerchild_parent.pages.home.HomeScreen
-import com.ihfazh.dailytrackerchild_parent.pages.login.LoginScreen
-import com.ihfazh.dailytrackerchild_parent.pages.login.LoginViewModel
+import com.ihfazh.dailytrackerchild_parent.pages.dashboard.DashboardViewModel
+import com.ihfazh.dailytrackerchild_parent.pages.main.MainScreen
 import com.ihfazh.dailytrackerchild_parent.pages.shared_login.SharedLogin
 import com.ihfazh.dailytrackerchild_parent.pages.shared_login.SharedLoginViewModel
 import com.ihfazh.dailytrackerchild_parent.pages.task_list.TaskListScreen
@@ -35,7 +34,7 @@ fun DailyTrackerNavHost(
             SharedLogin(
                 viewModel = viewModel(factory = SharedLoginViewModel.Factory) ,
                 onLoginSuccess = {
-                    navController.navigate("child-picker" ){
+                    navController.navigate("main" ){
                         popUpTo("login"){
                             inclusive = true
                         }
@@ -44,12 +43,13 @@ fun DailyTrackerNavHost(
             )
         }
         
-        composable("child-picker"){
-                HomeScreen(
-                    onProfileClicked = {profile ->
-                        navController.navigate("task-list/${profile.id}")
-                    }
-                )
+        composable("main"){
+//                HomeScreen(
+//                    onProfileClicked = {profile ->
+//                        navController.navigate("task-list/${profile.id}")
+//                    }
+//                )
+            MainScreen(dashboardViewModel = viewModel(factory = DashboardViewModel.Factory))
         }
 
         composable("task-list/{childId}"){ backStackEntry ->

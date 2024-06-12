@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -22,6 +23,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,113 +33,58 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import com.ihfazh.dailytrackerchild_parent.components.ChildData
 import com.ihfazh.dailytrackerchild_parent.components.DateItem
 import com.ihfazh.dailytrackerchild_parent.components.HijriDateItem
+import com.ihfazh.dailytrackerchild_parent.utils.DateProvider
 import kotlinx.coroutines.launch
 
 
-data class DashboardNavigationItem(
-    val title: String,
-    val icon: ImageVector,
-)
 
-@OptIn(ExperimentalFoundationApi::class)
+
 @Composable
 fun DashboardPage(
-    modifier: Modifier = Modifier
+    dashboardViewModel: DashboardViewModel,
+    modifier: Modifier = Modifier,
+    onChildClicked: (ChildData) -> Unit,
+    onNeedConfirmClicked: () -> Unit,
 ){
-    val pagerState = rememberPagerState(
-        initialPage = 1,
-    ) {
-        2
-    }
 
-    val navItems = listOf(
-        DashboardNavigationItem("Home", Icons.Default.Home),
-        DashboardNavigationItem("Tasks", Icons.Default.List),
+    val dashboardState = dashboardViewModel.state.collectAsState()
+    Dashboard(
+        state = dashboardState.value,
+        date = dashboardViewModel.date,
+        modifier = modifier,
+        onChildClicked = onChildClicked,
+        onNeedConfirmClicked = onNeedConfirmClicked,
+        onRetryClicked = {
+            dashboardViewModel.collectData()
+        }
     )
 
-    val coroutineScope = rememberCoroutineScope()
+    val lifecycleOwner = LocalLifecycleOwner.current
 
-    Scaffold(
-        bottomBar = {
-
-            Box(modifier = modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .shadow(5.dp, spotColor = Color.Transparent)
-            ){
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Absolute.SpaceAround
-                ) {
-
-                    navItems.mapIndexed { index, navItem ->
-                        Column(
-                            Modifier
-                                .padding(8.dp)
-                                .clickable {
-                                    coroutineScope.launch {
-                                        pagerState.scrollToPage(index)
-                                    }
-                                }
-                            ,
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.spacedBy(8.dp)
-                        ) {
-
-                            if (index == pagerState.currentPage){
-                                Icon(
-                                    navItem.icon,
-                                    navItem.title,
-                                    modifier = Modifier
-                                        .clip(RoundedCornerShape(16.dp))
-                                        .background(MaterialTheme.colorScheme.primary)
-                                        .padding(16.dp, 4.dp),
-                                    tint = MaterialTheme.colorScheme.onPrimary
-                                )
-                            } else {
-                                Icon(navItem.icon, navItem.title,
-                                    modifier = Modifier
-                                        .padding(16.dp, 4.dp)
-                                )
-                            }
-                            Text(text = navItem.title)
-
-                        }
-                    }
-
-                }
-
-            }
-
-        }
-    ) {
-
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(it)) {
-            if (pagerState.currentPage == 0){
-                Dashboard(state = DashboardState(DateItem(HijriDateItem(10, "dzulhijjah", 100), "")))
-            } else {
-                Column {
-                    Text(text = "Not implemented")
+    DisposableEffect(lifecycleOwner){
+        val observer = LifecycleEventObserver { source, event ->
+            when(event){
+                Lifecycle.Event.ON_RESUME -> dashboardViewModel.collectData()
+                else -> {
                 }
             }
         }
+        lifecycleOwner.lifecycle.addObserver(observer)
 
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
     }
 
+
+
 }
 
-
-@Preview
-@Composable
-fun DashboardPagePreview(){
-    DashboardPage()
-
-}

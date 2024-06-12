@@ -1,9 +1,7 @@
 package com.ihfazh.dailytrackerchild_parent.pages.dashboard
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +14,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LinearProgressIndicator
@@ -31,11 +28,12 @@ import androidx.compose.ui.unit.dp
 import com.ihfazh.dailytrackerchild_parent.components.ChildData
 import com.ihfazh.dailytrackerchild_parent.components.ChildItem
 import com.ihfazh.dailytrackerchild_parent.components.DateItem
-import com.ihfazh.dailytrackerchild_parent.components.HijriDateItem
+import com.ihfazh.dailytrackerchild_parent.utils.DateProvider
 
 @Composable
 fun Dashboard(
     state: DashboardState,
+    date: DateItem,
     modifier: Modifier = Modifier,
     onChildClicked: (ChildData) -> Unit = {},
     onNeedConfirmClicked: () -> Unit = {},
@@ -64,7 +62,7 @@ fun Dashboard(
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                "${state.date.hijriDateItem.date} ${state.date.hijriDateItem.month} ${state.date.hijriDateItem.year}",
+                "${date.hijriDateItem.date} ${date.hijriDateItem.month} ${date.hijriDateItem.year}",
                 style = MaterialTheme.typography.titleLarge,
             )
         }
@@ -136,10 +134,6 @@ fun Dashboard(
 @Composable
 fun DashboardPreview(){
     val state = DashboardState(
-        DateItem(
-            HijriDateItem(10, "DzulHijjah", 1445),
-            ""
-        ),
         0,
         listOf(
             ChildData(1, "https://png.pngtree.com/png-clipart/20220306/original/pngtree-faceless-hijab-vector-no-background-png-image_7420386.png", "Sakinah", 10, 20, 30, 1 ),
@@ -150,5 +144,5 @@ fun DashboardPreview(){
         error = "Something bad happens"
     )
 
-    Dashboard(state)
+    Dashboard(state, DateProvider().getDateItem())
 }

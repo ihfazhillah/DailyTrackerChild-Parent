@@ -37,3 +37,21 @@ data class ResetTaskBody(val task_id: String)
 
 @Serializable
 data class ResetTaskResponse(val task: TaskRemote)
+
+
+@Serializable
+data class ChildItemResponse(
+    val id: String,
+    val photo: String,
+    val name: String,
+    val todo_count: Int,
+    val udzur_count: Int,
+    val pending_count: Int,
+    val finished_count: Int
+)
+
+@Serializable
+data class ParentDashboardResponse(
+    val to_review_count: Int,
+    val children: List<ChildItemResponse>
+)

@@ -17,6 +17,7 @@ class DateProvider {
         "Rojab",
         "Sya'ban",
         "Romadhon",
+        "Syawwal",
         "Dzul Qo'dah",
         "Dzul Hijjah"
     )
